@@ -30,9 +30,6 @@ function App() {
 
   const [modalBuatUser, setModalBuatUser] = useState(false);
   const handelModalBuatUser = () => setModalBuatUser(!modalBuatUser);
-  const handelEditModalUser = () => {
-    setModalBuatUser(!modalBuatUser);
-  };
 
   const [modalHapusUser, setModalHapusUser] = useState(false);
   const handelModalHapusUser = () => setModalHapusUser(!modalHapusUser);
@@ -62,6 +59,14 @@ function App() {
   const handleAddUser = async (user: Users) => {
     if (user.name !== "" && user.email !== "") {
       await ResourceUser.postUser(user);
+      dispatchLoad(getUsers());
+    }
+    handelModalBuatUser();
+    setUpdateData(true);
+  };
+  const handleEditUser = async (user: Users) => {
+    if (user.name !== "" && user.email !== "") {
+      await ResourceUser.putUser(user);
       dispatchLoad(getUsers());
     }
     handelModalBuatUser();
@@ -99,7 +104,7 @@ function App() {
         </section>
 
         {/* popup */}
-        {modalAddUser(undefined, {
+        {modalAddUser({
           openModal: modalBuatUser,
           closeModal: handelModalBuatUser,
           ontap: async () => {
