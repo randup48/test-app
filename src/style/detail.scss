@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.Detail {
+  max-width: 1200px;
+  padding: 20px;
+  margin: 0 auto;
+  > *:not(*:last-child) {
+    margin-bottom: 32px;
+  }
+  #Identitas {
+    > *:not(*:last-child) {
+      margin-bottom: 16px;
+    }
+    > div {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+    }
+  }
+  main {
+    > *:not(*:last-child) {
+      margin-bottom: 16px;
+    }
+    section:first-child {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}
+
+#TablePost {
+  border: solid rgb(229, 229, 229) 1px;
+  border-radius: 10px;
+  overflow: hidden;
+  #HeaderTable {
+    display: grid;
+    grid-template-columns: 0.4fr 1fr 0.2fr;
+    background-color: rgb(216, 216, 216);
+    padding: 12px 24px;
+    overflow: hidden;
+  }
+
+  #BodyTable {
+    padding: 12px 24px;
+    article {
+      display: grid;
+      align-items: center;
+      grid-template-columns: 0.4fr 1fr 0.2fr;
+      > *:last-child {
+        align-self: flex-end;
+      }
+    }
+  }
+}
