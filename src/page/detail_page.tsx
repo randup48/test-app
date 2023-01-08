@@ -37,7 +37,6 @@ const DetailPage = () => {
   const dataUser: Users | undefined = useSelector(
     (state: RootState) => state.loadDetailDataUser.value
   );
-  const dispatchDetailData = useDispatch<AppDispatch>();
 
   // redux load data table
   const dataPosts: PostsUser[] | undefined = useSelector(
@@ -49,14 +48,14 @@ const DetailPage = () => {
   const dispatchLoad = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatchDetailData(getDetailUsers(id ?? ""));
+    dispatchLoad(getDetailUsers(id ?? ""));
     dispatchLoad(getPosts(id ?? ""));
-  }, [dispatchDetailData, dispatchLoad, id]);
+  }, [dispatchLoad, id]);
 
   const handleAddPost = async (posts: PostsUser) => {
     await ResourcePost.postPosts(posts);
     handleBuatPost();
-    dispatchDetailData(getDetailUsers(id ?? ""));
+    dispatchLoad(getDetailUsers(id ?? ""));
   };
   return (
     <div className="Detail">

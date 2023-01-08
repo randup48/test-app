@@ -58,10 +58,7 @@ export function modalDelete(param: paramModalDelete) {
   );
 }
 
-export function modalAddUser(
-  user_id: string | undefined,
-  param: paramModalAddUser
-) {
+export function modalAddUser(param: paramModalAddUser) {
   return (
     <Modal
       open={param.openModal}
