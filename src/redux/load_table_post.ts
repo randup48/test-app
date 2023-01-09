@@ -13,7 +13,7 @@ const initialState: ListUserState = {
 };
 
 export const getPosts = createAsyncThunk(
-  "users/getUser",
+  "table/post",
   async (user_id: string) => {
     return await ResourcePost.getAllPostUser(user_id);
   }

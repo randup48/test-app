@@ -7,7 +7,7 @@ import { Users } from "../model/users";
 import type { AppDispatch, RootState } from "../redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { getUsers } from "../redux/load_table_user";
+import { getUsers, reset } from "../redux/load_table_user";
 import Divider from "@mui/material/Divider/Divider";
 import Backdrop from "@mui/material/Backdrop/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
@@ -19,27 +19,32 @@ import { modalAddUser, modalDelete } from "../components/modal";
 import {
   setEmail,
   setGender,
+  setId,
   setName,
   setStatus,
-} from "../redux/field_add_user";
+} from "../redux/field_user";
+import { getDetailUsers } from "../redux/load_detail_user";
 
 function App() {
-  const [user_id, setUser_id] = useState("-");
-
   const [updateData, setUpdateData] = useState(true);
 
-  const [modalBuatUser, setModalBuatUser] = useState(false);
-  const handelModalBuatUser = () => setModalBuatUser(!modalBuatUser);
+  const [modalBuatEditUser, setModalBuatEditUser] = useState(false);
+  const handelModalBuatEditUser = () =>
+    setModalBuatEditUser(!modalBuatEditUser);
 
   const [modalHapusUser, setModalHapusUser] = useState(false);
   const handelModalHapusUser = () => setModalHapusUser(!modalHapusUser);
 
   // redux load data table
-  const dataUser: Users[] | undefined = useSelector(
+  const dataListUser: Users[] | undefined = useSelector(
     (state: RootState) => state.loadDataUser.value
   );
   const loading: boolean = useSelector(
     (state: RootState) => state.loadDataUser.isLoading
+  );
+  // redux load detail user
+  const dataUser: Users | undefined = useSelector(
+    (state: RootState) => state.loadDetailDataUser.value
   );
 
   // redux set value add user
@@ -61,7 +66,7 @@ function App() {
       await ResourceUser.postUser(user);
       dispatchLoad(getUsers());
     }
-    handelModalBuatUser();
+    handelModalBuatEditUser();
     setUpdateData(true);
   };
   const handleEditUser = async (user: Users) => {
@@ -69,12 +74,13 @@ function App() {
       await ResourceUser.putUser(user);
       dispatchLoad(getUsers());
     }
-    handelModalBuatUser();
+    handelModalBuatEditUser();
     setUpdateData(true);
   };
 
   const handleDeleteUser = async (user_id: string) => {
     await ResourceUser.deleteUser(user_id);
+    dispatchLoad(reset());
     dispatchLoad(getUsers());
 
     handelModalHapusUser();
@@ -98,15 +104,15 @@ function App() {
         <section>
           <h3>Daftar Pengguna</h3>
 
-          <Button onClick={handelModalBuatUser} variant="contained">
+          <Button onClick={handelModalBuatEditUser} variant="contained">
             Buat Pengguna Baru
           </Button>
         </section>
 
         {/* popup */}
         {modalAddUser({
-          openModal: modalBuatUser,
-          closeModal: handelModalBuatUser,
+          openModal: modalBuatEditUser,
+          closeModal: handelModalBuatEditUser,
           ontap: async () => {
             handleAddUser({
               name: fieldUser.name,
@@ -141,12 +147,12 @@ function App() {
           openModal: modalHapusUser,
           closeModal: handelModalHapusUser,
           ontap: async () => {
-            handleDeleteUser(user_id);
+            handleDeleteUser(fieldUser.id ?? "");
           },
         })}
 
         {/* table */}
-        {dataUser!.length && dataUser !== undefined ? (
+        {dataListUser!.length && dataListUser !== undefined ? (
           <section id="TableUser">
             <div id="HeaderTable">
               {headerTableUser.map((e) => (
@@ -155,7 +161,7 @@ function App() {
             </div>
 
             <div id="BodyTable">
-              {dataUser.map((dataTable, index) => (
+              {dataListUser.map((dataTable, index) => (
                 <div>
                   <article key={index}>
                     <p>{dataTable.id}</p>
@@ -173,13 +179,19 @@ function App() {
                           <Visibility sx={{ color: "orange" }} />
                         </IconButton>
                       </Link>
-                      <IconButton aria-label="update">
+                      <IconButton
+                        aria-label="update"
+                        onClick={() => {
+                          dispatchLoad(getDetailUsers(dataTable.id ?? ""));
+                          handelModalBuatEditUser();
+                        }}
+                      >
                         <Edit sx={{ color: "blue" }} />
                       </IconButton>
                       <IconButton
                         aria-label="delete"
                         onClick={() => {
-                          setUser_id(dataTable.id ?? "");
+                          dispatchLoad(setId(dataTable.id ?? ""));
                           dispatchLoad(setName(dataTable.name));
                           handelModalHapusUser();
                         }}
@@ -188,7 +200,7 @@ function App() {
                       </IconButton>
                     </ButtonGroup>
                   </article>
-                  {index + 1 !== dataUser.length ? <Divider light /> : null}
+                  {index + 1 !== dataListUser.length ? <Divider light /> : null}
                 </div>
               ))}
             </div>
@@ -197,7 +209,7 @@ function App() {
           <p>Data belum tersedia, silahkan buat data baru</p>
         )}
 
-        {dataUser!.length && dataUser !== undefined ? (
+        {dataListUser!.length && dataListUser !== undefined ? (
           <Pagination
             count={5}
             siblingCount={0}

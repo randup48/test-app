@@ -12,14 +12,18 @@ const initialState: ListUserState = {
   isLoading: false,
 };
 
-export const getUsers = createAsyncThunk("users/getUser", async () => {
+export const getUsers = createAsyncThunk("table/user", async () => {
   return await ResourceUser.getAllUser();
 });
 
 export const loadSlice = createSlice({
   name: "loadData",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.value = initialState.value;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
@@ -34,5 +38,7 @@ export const loadSlice = createSlice({
       });
   },
 });
+
+export const { reset } = loadSlice.actions;
 
 export default loadSlice.reducer;

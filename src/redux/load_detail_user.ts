@@ -12,7 +12,7 @@ const initialState: UserState = {
 };
 
 export const getDetailUsers = createAsyncThunk(
-  "users/getUser",
+  "detail/user",
   async (user_id: string) => {
     return await ResourceUser.getDetailUser(user_id);
   }

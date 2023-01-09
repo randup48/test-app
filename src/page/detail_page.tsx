@@ -15,7 +15,7 @@ import { headerTablePost } from "../constant/constant";
 import { ResourcePost } from "../data/resource";
 import { PostsUser } from "../model/posts";
 import { Users } from "../model/users";
-import { setBody, setTitle } from "../redux/field_add_post";
+import { setBody, setTitle } from "../redux/field_post";
 import { getDetailUsers } from "../redux/load_detail_user";
 import { getPosts } from "../redux/load_table_post";
 import { AppDispatch, RootState } from "../redux/store";

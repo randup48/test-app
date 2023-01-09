@@ -2,8 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import loadReducer from "./load_table_user";
 import loadDetailReducer from "./load_detail_user";
 import loadDataPosts from "./load_table_post";
-import fieldAddUserReducer from "./field_add_user";
-import fieldAddPostReducer from "./field_add_post";
+import fieldAddUserReducer from "./field_user";
+import fieldAddPostReducer from "./field_post";
 
 export const store = configureStore({
   reducer: {

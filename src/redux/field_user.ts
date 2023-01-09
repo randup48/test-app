@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Users } from "../model/users";
 
 const initialState: Users = {
+  id: undefined,
   name: "",
   email: "",
   gender: "male",
@@ -13,6 +14,9 @@ export const fieldAddUserSlice = createSlice({
   name: "fieldAddUser",
   initialState,
   reducers: {
+    setId: (state, action: PayloadAction<string>) => {
+      state.id = action.payload;
+    },
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
@@ -28,7 +32,7 @@ export const fieldAddUserSlice = createSlice({
   },
 });
 
-export const { setName, setEmail, setGender, setStatus } =
+export const { setId, setName, setEmail, setGender, setStatus } =
   fieldAddUserSlice.actions;
 
 export default fieldAddUserSlice.reducer;
