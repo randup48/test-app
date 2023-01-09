@@ -3,7 +3,7 @@ import { ResponseUser } from "../model/reponse_api";
 import { Users } from "../model/users";
 import { AUTH_TOKEN, ConfigAPI } from "./config";
 
-const getAllUser = (url: string) =>
+export const getAllUser = (url: string) =>
   axios
     .get(url, {
       params: {

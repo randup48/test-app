@@ -5,3 +5,8 @@ export interface Users {
   gender: string;
   status: string;
 }
+
+export interface ListUserState {
+  value: Users[];
+  isLoading: boolean;
+}
